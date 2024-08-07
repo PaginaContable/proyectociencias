@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Impuestos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1 id="aa">Calculadora de Impuestos</h1>
+    </header>
+    <main>
+        <section id="formulario">
+            <h2>Ingrese los datos</h2>
+            <form>
+                <label for="regimen">Regimen:</label>
+                <select id="regimen" required>
+                    <option id="nada" value=""></option>
+                    <option value="General">General</option>
+                    <option value="Pequeño Contribuyente">Pequeño Contribuyente</option>
+                    <option value="Facturas Especiales">Facturas Especiales</option>
+                    <option value="ISR Opcional simplificado">ISR Opcional Simplificado</option>
+                    <option value="ISRCapital">ISR Sobre Rentas de Capital</option>
+                    <option value="ISR Trimestral">ISR Trimestral</option>
+                    
+                    
+                    <option value="ISR Relación de Dependencia">ISR Relación de Dependencia</option>
+                </select>
+                <label for="ingresos">Ingresos:</label>
+                <input type="number" id="ingresos" value="0" required>
+                <label for="deducciones">Deducciones:</label>
+                <input type="number" id="deducciones" value="0" required>
+             <br>
+                <button type="button" onclick="calcularImpuestos()">Calcular Impuestos</button>
+            </form>
+        </section>
+        <section id="resultados">
+            <h2>Resultados</h2>
+            <table>
+                <tr>
+                    <th>IVA:</th>
+                    <td id="iva">0.00</td>
+                </tr>
+                <tr>
+                    <th>ISR:</th>
+                    <td id="isr">0.00</td>
+                </tr>
+                <tr>
+           
+                    <th>Total Impuestos:</th>
+                    <td id="total-impuestos">0.00</td>
+                </tr>
+            </table>
+        </section>
+    </main>
+<a id="lala" href="CalculoImpuestos.html">Atrás</a>
+</body>
+</html>
+<style>
+    /* Global Styles */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    color: #333;
+}
+#aa{
+    color: white;
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+/* Header Styles */
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+/* Main Styles */
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+section {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styles */
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    border: 1px solid #ccc;
+}
+
+input[type="number"] {
+    width: 100px;
+}
+
+button[type="button"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#lala{
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+}
+#lala:hover{
+  
+        background-color: #0056b3; 
+}
+
+button[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+/* Resultados Styles */
+
+#resultados {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+    main {
+        flex-direction: column;
+    }
+
+    section {
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    input, select {
+        width: 100%;
+    }
+
+    button[type="button"] {
+        width: 100%;
+    }
+}
+</style>
+<script>
+  function calcularImpuestos() {
+    // Obtener los valores de los inputs
+    const regimen = document.getElementById("regimen").value;
+    const ingreso = parseFloat(document.getElementById("ingresos").value);
+    const deducciones = parseFloat(document.getElementById("deducciones").value);
+
+    // Calculo de impuestos
+    let iva = 0;
+    let isr = 0;
+    let iusi = 0;
+    let iso = 0;
+    let totalImpuestos = 0;
+const ingresos = ingreso - deducciones;
+    // Calculo de IVA
+    if (regimen === "General") {
+        iva = ingresos * 0.12;
+    } else if (regimen === "Pequeño Contribuyente") {
+        iva = ingresos * 0.05;
+    } else if (regimen === "Facturas Especiales") {
+        iva = ingresos * 0.12;
+        isr = ingresos * 0.05;
+    }
+if(regimen=="ISR Opcional simplificado" ){
+    if(ingresos<=30000){
+        isr = ingresos * 0.05;
+    }
+    if(ingresos > 30000){
+        isr = ((ingresos - 1500) * 0.07) + 1500;
+    }
+}
+if(regimen=="ISR Relación de Dependencia"){
+    if(ingresos<=300000){
+        isr = ingresos * 0.05;
+    }
+    if(ingresos > 300000){
+        isr = ((ingresos - 15000) * 0.07) + 15000;
+    }
+}
+if(regimen=="ISR Trimestral"){
+  isr = ingresos * 0.25;
+}
+
+
+if(regimen== "ISRCapital"){
+isr = ingresos *  0.10;
+}
+
+
+   
+
+    // Calculo de total de impuestos
+    totalImpuestos = iva + isr;
+
+    // Mostrar resultados
+    document.getElementById("iva").innerHTML = iva.toFixed(2);
+    document.getElementById("isr").innerHTML = isr.toFixed(2);
+   
+    document.getElementById("total-impuestos").innerHTML = totalImpuestos.toFixed(2);
+}
+</script>
