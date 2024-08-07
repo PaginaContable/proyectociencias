@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Sueldos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Sueldos</h1>
+        <form id="salaryForm">
+            <div class="form-group">
+                <label for="employeeName">Nombre del Empleado:</label>
+                <input type="text" id="employeeName" required>
+            </div>
+            <div class="form-group">
+                <label for="basicSalary">Sueldo Ordinario (Q):</label>
+                <input type="number" id="basicSalary" required>
+            </div>
+            <div class="form-group">
+                <label for="extraHours">Horas Extras:</label>
+                <input type="number" id="extraHours" required>
+            </div>
+            <div class="form-group">
+                <label for="commissions">Comisiones (Q):</label>
+                <input type="number" id="commissions" required>
+            </div>
+            <button type="button" onclick="calculateSalary()">Calcular Sueldo</button>
+        </form>
+        <div id="results" class="results"></div>
+    </div>
+    <a id="lala" href="Inicio.html">Regresar</a>
+    <script src="script.js"></script>
+</body>
+</html>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+}
+#lala{
+    display: block;
+    width: 10%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 100px;
+    text-decoration: none;
+}
+#lala:hover{
+    background-color: #0056b3;
+    width: 15%;
+    transition: 1s;
+text-align: center;
+}
+
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #007bff;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.results {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+</style>
+<script>
+   function calculateSalary() {
+    const employeeName = document.getElementById('employeeName').value;
+    const basicSalary = parseFloat(document.getElementById('basicSalary').value);
+    const extraHours = parseFloat(document.getElementById('extraHours').value);
+    const commissions = parseFloat(document.getElementById('commissions').value);
+
+    // Valores y tasas conforme a la ley de Guatemala
+    const extraHourRate = basicSalary / 30 / 8 * 1.5; // 50% más del salario por hora
+    const incentiveBonus = 250; // Bonificación incentivo según el decreto 78-89
+    const igssRate = 0.0483; // Tasa del IGSS (4.83%)
+    const isrRate = 0.05; // Tasa del ISR (5%)
+
+    // Cálculo del total devengado
+    const extraHourValue = extraHours * extraHourRate;
+    const totalEarned = basicSalary + extraHourValue + commissions + incentiveBonus;
+
+    // Cálculo de deducciones
+    const igssDeduction = basicSalary * igssRate;
+    const isrDeduction = totalEarned > 6000 ? totalEarned * isrRate : 0; // ISR se aplica solo si el total devengado supera Q6000
+
+    // Cálculo del total de descuentos
+    const totalDeductions = igssDeduction + isrDeduction;
+
+    // Cálculo del total líquido
+    const netSalary = totalEarned - totalDeductions;
+
+    // Mostrar resultados
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = `
+        <h2>Resultados para ${employeeName}</h2>
+        <p>Sueldo Ordinario: Q${basicSalary.toFixed(2)}</p>
+        <p>Valor Horas Extras: Q${extraHourValue.toFixed(2)}</p>
+        <p>Comisiones: Q${commissions.toFixed(2)}</p>
+        <p>Bonificación Incentivo: Q${incentiveBonus.toFixed(2)}</p>
+        <p>Total Devengado: Q${totalEarned.toFixed(2)}</p>
+        <p>Deducción IGSS: Q${igssDeduction.toFixed(2)}</p>
+        <p>Deducción ISR: Q${isrDeduction.toFixed(2)}</p>
+        <p>Total Descuentos: Q${totalDeductions.toFixed(2)}</p>
+        <p>Total Líquido: Q${netSalary.toFixed(2)}</p>
+    `;
+}
+ 
+</script>

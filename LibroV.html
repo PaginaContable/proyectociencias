@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libro de Ventas Contable</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Libro de Ventas Contable</h1>
+        <form id="salesForm">
+            <div class="form-group">
+                <label for="invoiceNumber">Número de Factura:</label>
+                <input type="text" id="invoiceNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="date">Fecha de Emisión:</label>
+                <input type="date" id="date" required>
+            </div>
+            <div class="form-group">
+                <label for="clientName">Nombre del Cliente:</label>
+                <input type="text" id="clientName" required>
+            </div>
+            <div class="form-group">
+                <label for="clientNIT">NIT del Cliente:</label>
+                <input type="text" id="clientNIT" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción del Producto/Servicio:</label>
+                <input type="text" id="description" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Monto de la Venta (Q):</label>
+                <input type="number" id="amount" required>
+            </div>
+            <div class="form-group">
+                <label for="discount">Descuento (Q):</label>
+                <input type="number" id="discount" value="0">
+            </div>
+            <button type="button" onclick="addSale()">Agregar Venta</button>
+        
+        
+        
+        
+        
+            
+        
+        
+        
+        
+        </form>
+        <div id="salesTableContainer">
+            <h2>Ventas Registradas</h2>
+            <table id="salesTable">
+                <thead>
+                    <tr>
+                        <th>Número de Factura</th>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>NIT</th>
+                        <th>Descripción</th>
+                        <th>Monto Venta (Q)</th>
+                        <th>Monto Sin IVA (12%)</th>
+                        <th>IVA</th>
+                        <th>Descuento</th>
+                        <th>Total con Descuento</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div id="totals">
+                <h3>Totales</h3>
+                <p>Total Ventas: Q<span id="totalSales">0.00</span></p>
+                <p>Total Final: Q<span id="totalIVA">0.00</span></p>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+<br>
+<a id="re" href="Inicio.html">Regresar</a>
+</body>
+</html>
+<style>
+  #re {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    text-decoration: none;
+    
+}
+
+#re:hover {
+    background-color: #0056b3;
+}
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #007bff;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+#totals {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+</style>
+<script>
+  function addSale() {
+    const invoiceNumber = document.getElementById('invoiceNumber').value;
+    const date = document.getElementById('date').value;
+    const clientName = document.getElementById('clientName').value;
+    const clientNIT = document.getElementById('clientNIT').value;
+    const description = document.getElementById('description').value;
+    const amount = parseFloat(document.getElementById('amount').value);
+    const discount = parseFloat(document.getElementById('discount').value);
+
+    if (isNaN(amount) || isNaN(discount)) {
+        alert('Por favor, ingrese valores válidos para monto y descuento.');
+        return;
+    }
+
+    const ivaRate = 1.12; // IVA del 12%
+    const iva = amount / ivaRate;
+    const total = amount - iva ;
+    const totalWithDiscount = iva - discount;
+
+    // Crear una nueva fila en la tabla
+    const tableBody = document.querySelector('#salesTable tbody');
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+        <td>${invoiceNumber}</td>
+        <td>${date}</td>
+        <td>${clientName}</td>
+        <td>${clientNIT}</td>
+        <td>${description}</td>
+        <td>Q${amount.toFixed(2)}</td>
+        <td>Q${iva.toFixed(2)}</td>
+        <td>Q${total.toFixed(2)}</td>
+        <td>Q${discount.toFixed(2)}</td>
+        <td>Q${totalWithDiscount.toFixed(2)}</td>
+    `;
+    tableBody.appendChild(newRow);
+
+    // Actualizar los totales
+    updateTotals(amount, iva, totalWithDiscount);
+}
+
+function updateTotals(amount, iva, totalWithDiscount) {
+    const totalSalesElem = document.getElementById('totalSales');
+    const totalIVAElem = document.getElementById('totalIVA');
+
+    const currentTotalSales = parseFloat(totalSalesElem.textContent || '0');
+    const currentTotalIVA = parseFloat(totalIVAElem.textContent || '0');
+
+    totalSalesElem.textContent = (currentTotalSales + amount).toFixed(2);
+    totalIVAElem.textContent = (currentTotalIVA + iva).toFixed(2);}
+
+</script>
